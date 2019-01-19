@@ -1,7 +1,7 @@
 import utilities.JobsUtils
 
 // Job pour produire un snapshot ou une release d'un rôle Ansible
-def job = freeStyleJob('SNAPSHOT_RELEASE_ANSILBE_ROLE'){
+def job = freeStyleJob('SNAPSHOT_OR_RELEASE_ANSIBLE_ROLE'){
 
     // Description du job.
     description('Ce job crée un snapshot ou une release d\'un rôle Ansible et charge l\'archive  sur un repository Nexus.')
@@ -12,6 +12,7 @@ def job = freeStyleJob('SNAPSHOT_RELEASE_ANSILBE_ROLE'){
         stringParam('ROLE_NAME', '', 'Nom du rôle.')
         stringParam('ROLE_VERSION', '', 'Version du rôle.')
         booleanParam('RELEASE', true, 'Cocher si vous souhaitez faire une release. Décocher si vous souhaitez faire un snapshot.')
+        booleanParam('LATEST', false, 'Cocher si vous faites la release de la dernière version stable du rôle.')
     }
 
     // Récupérer sur Git la branche à utiliser pour faire le deploiement
@@ -28,7 +29,7 @@ def job = freeStyleJob('SNAPSHOT_RELEASE_ANSILBE_ROLE'){
     }
 
     steps {
-        shell(readFileFromWorkspace('scripts/SNAPSHOT_RELEASE_ANSILBE_ROLE/snapshot_release_ansible_role.sh'))
+        shell(readFileFromWorkspace('scripts/SNAPSHOT_OR_RELEASE_ANSIBLE_ROLE/snapshot_or_release_ansible_role.sh'))
     }
 }
 

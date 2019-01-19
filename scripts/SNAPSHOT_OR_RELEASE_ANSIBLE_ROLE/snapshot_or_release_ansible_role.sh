@@ -33,6 +33,10 @@ build_archive_name() {
   fi
 }
 
+build_archive_name_latest() {
+  echo "${ROLE_NAME}-latest.tar.gz"
+}
+
 build_repository_name() {
   if [[ ${RELEASE} == "false" ]]; then
     echo "snapshots"
@@ -47,13 +51,22 @@ push_archive() {
   user=${REPO_USERNAME}
   password=${REPO_PASSWORD}
   repo_url="${REPO_ANSIBLE_GALAXY_BASE_URL}/${repository_name}/${ROLE_NAME}/${archive_name}"
-
   echo "Repository name: ${repository_name}"
   echo "Archive name: ${archive_name}"
   echo "Repository Url: ${repo_url}"
-
   tar -zcvf ${archive_name} ${ROLE_NAME} --exclude .git
   curl -sSf -k -u ${user}:${password} -T ${archive_name} ${repo_url}
+  rm -f ${archive_name}
+
+  if [[ ( ${LATEST} == "true" && ${RELEASE} == "true" ) ]]; then
+    archive_name=$(build_archive_name_latest)
+    repo_url="${REPO_ANSIBLE_GALAXY_BASE_URL}/${repository_name}/${ROLE_NAME}/${archive_name}"
+    echo "Archive lastest version name: ${archive_name}"
+    echo "Repository Url: ${repo_url}"
+    tar -zcvf ${archive_name} ${ROLE_NAME} --exclude .git
+    curl -sSf -k -u ${user}:${password} -T ${archive_name} ${repo_url}
+    rm -f ${archive_name}
+  fi
 }
 
 check_arguments

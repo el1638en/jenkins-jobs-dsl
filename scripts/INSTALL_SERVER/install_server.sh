@@ -22,7 +22,7 @@ cd ${WORKSPACE}/${PROJECT_NAME}
 
 # Initialisation de l'inventory/hosts
 INVENTORY_FILE="inventory/hosts.yml"
-echo "$MACHINE_NAME ansible_host=$ADDRESS_IP ansible_connection=ssh ansible_become_pass=" > $INVENTORY_FILE
+echo "$MACHINE_NAME ansible_host=$ADDRESS_IP ansible_connection=ssh ansible_ssh_pass=deploy ansible_become_pass=" > $INVENTORY_FILE
 echo "[all]" >> $INVENTORY_FILE
 echo "$MACHINE_NAME" >> $INVENTORY_FILE
 

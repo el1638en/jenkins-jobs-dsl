@@ -51,6 +51,10 @@ def job = freeStyleJob('INSTALL_SERVER'){
         shell(readFileFromWorkspace('scripts/commons/create_virtualenv.sh'))
         // Téléchargement des rôles de dépendance
         shell(readFileFromWorkspace('scripts/commons/install_roles_dependance.sh'))
+        // Charger la clé privée du user avec ssh-agent
+        shell(readFileFromWorkspace('scripts/commons/launch_ssh_agent.sh'))
+        // Initialisation du fichier Ansible password file TODO
+        // shell(readFileFromWorkspace('scripts/commons/init_ansible_vault_file.sh'))
         // Installation du serveur
         shell(readFileFromWorkspace('scripts/INSTALL_SERVER/install_server.sh'))
     }
